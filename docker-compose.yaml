@@ -1,0 +1,38 @@
+version: '3'
+
+volumes:
+  php_running_control_mariadb_data:
+    driver: local
+
+services:
+  db:
+    image: mariadb:10.3
+    container_name: php_running_control_api_db
+    volumes:
+      - php_running_control_mariadb_data:/var/lib/postgresql/data
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+      - MYSQL_DATABASE=php_running_control_api
+    ports:
+      - 3306:3306
+
+  dbtest:
+    image: mariadb:10.3
+    container_name: php_running_control_api_dbtest
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+      - MYSQL_DATABASE=php_running_control_api_test
+    ports:
+      - 3307:3306
+
+  app:
+    image: ambientum/php:8.0-nginx
+    container_name: php_running_control_api_app
+    volumes:
+      - .:/var/www/app
+    ports:
+      - "8080:8080"
+      - "8083:8083"
+    links:
+      - db
+      - dbtest
