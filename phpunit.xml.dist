@@ -7,6 +7,10 @@
          colors="true"
          bootstrap="tests/bootstrap.php"
 >
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
+
     <php>
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
