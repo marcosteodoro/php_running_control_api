@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RunnerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=RunnerRepository::class)
@@ -19,16 +20,31 @@ class Runner
 
     /**
      * @ORM\Column(type="string", length=150)
+     * @Assert\NotBlank(message = "O campo 'name' precisa ser preenchido.")
+     * @Assert\Length(
+     *    min = 3,
+     *    max = 150,
+     *    minMessage = "O nome deve ter no mínimo {{ limit }} caracteres",
+     *    maxMessage = "O nome não deve ser maior que {{ limit }} caracteres"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=11)
+     * @Assert\NotBlank(message = "O campo 'cpf' precisa ser preenchido.")
+     * @Assert\Length(
+     *    min = 11,
+     *    max = 14,
+     *    minMessage = "O CPF deve ter no mínimo {{ limit }} caracteres.",
+     *    maxMessage = "O CPF não deve ser maior que {{ limit }} caracteres."
+     * )
      */
     private $cpf;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank(message = "O campo 'birthdate' precisa ser preenchido.")
      */
     private $birthdate;
 
