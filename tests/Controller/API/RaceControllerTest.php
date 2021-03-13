@@ -4,67 +4,67 @@ namespace App\Tests\API\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class RunnerControllerTest extends WebTestCase
+class RaceControllerTest extends WebTestCase
 {
+    private $client;
+
     public function testIndexRunners()
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/runner');
+        $client->request('GET', 'api/race');
 
         $response = $client->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
-        $this->assertEquals(0, count(json_decode($response->getContent())->runners));
+        $this->assertEquals(0, count(json_decode($response->getContent())->races));
     }
 
-    public function testNewRunner()
+    public function testNewRace()
     {
         $client = static::createClient();
 
         $client->request(
             'POST',
-            '/api/runner',
+            '/api/race',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
             json_encode([
-                'name' => 'John Doe',
-                'cpf' => '79396699071',
-                'birthdate' => '1994-07-03'
+                'type' => 3,
+                'date' => '2021-03-27'
             ])
         );
 
         $response = $client->getResponse();
 
-        $runnerData = json_decode($response->getContent())->runner;
+        $raceData = json_decode($response->getContent())->race;
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertNotEmpty($runnerData);
+        $this->assertNotEmpty($raceData);
 
-        $this->assertIsNumeric($runnerData->id, "Runner ID needs to be numeric");
+        $this->assertIsNumeric($raceData->id, "Race ID needs to be numeric");
     }
 
-    public function testNotCreateRunnerWithMissingInfo()
+    public function testNotCreateRaceWithInvalidType()
     {
         $client = static::createClient();
 
         $client->request(
             'POST',
-            '/api/runner',
+            '/api/race',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
             json_encode([
-                'name' => 'John Doe',
-                'cpf' => '',
-                'birthdate' => '1994-07-03'
+                'type' => 300,
+                'date' => '2021-03-27'
             ])
         );
 
@@ -75,6 +75,6 @@ class RunnerControllerTest extends WebTestCase
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertEquals('error', $responseContent->status);
         $this->assertNotEmpty($responseContent->errors);
-        $this->assertCount(2,$responseContent->errors);
+        $this->assertCount(1, $responseContent->errors);
     }
 }
