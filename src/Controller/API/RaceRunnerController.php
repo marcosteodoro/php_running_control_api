@@ -3,6 +3,7 @@
 namespace App\Controller\API;
 
 use App\Entity\Race;
+use App\Entity\RaceResult;
 use App\Entity\Runner;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,6 +35,38 @@ class RaceRunnerController extends AbstractController
             'status' => 'ok',
             'code' => 200,
             'race' => $race,
+        ]);
+    }
+
+    #[Route('/api/race/{id}/runner/{runner_id}/result/add', name: 'api/race_runner@resultAdd', methods:['POST'])]
+    /**
+     * @ParamConverter("runner", options={"id" = "runner_id"})
+     */
+    public function addResult(Request $request, Race $race, Runner $runner): Response
+    {
+        $requestData = $request->toArray();
+        $result = new RaceResult();
+
+        $result->setRace($race);
+        $result->setRunner($runner);
+        $result->setStartTime(
+            (new \DateTime(
+                $race->getDate()->format('Y-m-d') . ' ' . $requestData['startTime']
+            ))
+        );
+        $result->setFinishTime(
+            (new \DateTime(
+                $race->getDate()->format('Y-m-d') . ' ' . $requestData['finishTime']
+            ))
+        );
+        
+        $this->entityManager->persist($result);
+        $this->entityManager->flush();
+
+        return $this->json([
+            'status' => 'ok',
+            'code' => 200,
+            'result' => $result,
         ]);
     }
 }
