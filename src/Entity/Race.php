@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RaceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,6 +35,16 @@ class Race
      */
     private $date;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Runner::class, inversedBy="races")
+     */
+    private $runners;
+
+    public function __construct()
+    {
+        $this->runners = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +70,30 @@ class Race
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Runner[]
+     */
+    public function getRunners(): Collection
+    {
+        return $this->runners;
+    }
+
+    public function addRunner(Runner $runner): self
+    {
+        if (!$this->runners->contains($runner)) {
+            $this->runners[] = $runner;
+        }
+
+        return $this;
+    }
+
+    public function removeRunner(Runner $runner): self
+    {
+        $this->runners->removeElement($runner);
 
         return $this;
     }
