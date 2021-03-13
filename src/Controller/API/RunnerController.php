@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RunnerController extends AbstractController
 {
@@ -33,7 +34,7 @@ class RunnerController extends AbstractController
     }
 
     #[Route('/api/runner', name: 'api/runner@new', methods:['POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, ValidatorInterface $validator): Response
     {
         $requestData = $request->toArray();
         $runner = new Runner();
@@ -41,6 +42,22 @@ class RunnerController extends AbstractController
         $runner->setName($requestData['name']);
         $runner->setCpf($requestData['cpf']);
         $runner->setBirthdate((new \DateTime($requestData['birthdate'])));
+
+        $errors = $validator->validate($runner);
+
+        if (count($errors) > 0) {
+            $errorMessages = [];
+
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'errors' => $errorMessages
+            ], 400);
+        }
 
         $this->entityManager->persist($runner);
         $this->entityManager->flush();

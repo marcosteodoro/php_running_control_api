@@ -51,4 +51,34 @@ class RunnerControllerTest extends WebTestCase
 
         $this->assertIsNumeric($runnerData->id, "Runner ID needs to be numeric");
     }
+
+    public function testNotCreateRunnerWithMissingInfo()
+    {
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/runner',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_REFERER' => '/foo/bar',
+            ],
+            json_encode([
+                'name' => 'John Doe',
+                'cpf' => '',
+                'birthdate' => '1994-07-03'
+            ])
+        );
+
+        $response = $client->getResponse();
+
+        $responseContent = json_decode($response->getContent());
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals('error', $responseContent->status);
+        $this->assertNotEmpty($responseContent->errors);
+        $this->assertCount(2,$responseContent->errors);
+    }
 }
