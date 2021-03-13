@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\API\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RunnerControllerTest extends WebTestCase
 {
-    private $client;
-
     public function testIndexRunners()
     {
         $client = static::createClient();
