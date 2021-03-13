@@ -10,8 +10,13 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210313201949 extends AbstractMigration
+final class Version20210313210801 extends AbstractMigration
 {
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+    
     public function getDescription() : string
     {
         return '';
@@ -21,13 +26,11 @@ final class Version20210313201949 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE race (id INT AUTO_INCREMENT NOT NULL, type INT NOT NULL, date DATE NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE runner (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(150) NOT NULL, cpf VARCHAR(11) NOT NULL, birthdate DATE NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE race');
-        $this->addSql('DROP TABLE runner');
     }
 }
