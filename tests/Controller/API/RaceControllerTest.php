@@ -6,9 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RaceControllerTest extends WebTestCase
 {
-    private $client;
-
-    public function testIndexRunners()
+    public function testIndexRace()
     {
         $client = static::createClient();
 

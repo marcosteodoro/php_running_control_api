@@ -24,12 +24,12 @@ class RaceController extends AbstractController
     {
         $entityRepository = $this->entityManager->getRepository(Race::class);
 
-        $runners = $entityRepository->findAll();
+        $races = $entityRepository->findAll();
         
         return $this->json([
             'status' => 'ok',
             'code' => 200,
-            'races' => $runners,
+            'races' => $races,
         ]);
     }
 
