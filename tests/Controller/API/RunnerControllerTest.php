@@ -49,6 +49,31 @@ class RunnerControllerTest extends WebTestCase
         $this->assertIsNumeric($runnerData->id, "Runner ID needs to be numeric");
     }
 
+    public function testNewRunnersBatch()
+    {
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/runner/batch',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            file_get_contents(__DIR__ . '/../../mocks/runners.json')
+        );
+
+        $response = $client->getResponse();
+
+        $runnersData = json_decode($response->getContent())->runners;
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertNotEmpty($runnersData);
+
+        $this->assertCount(5, $runnersData);
+    }
+
     public function testNotCreateRunnerWithMissingInfo()
     {
         $client = static::createClient();

@@ -1,0 +1,29 @@
+{
+    "runners": [
+        {
+            "name": "John Doe",
+            "cpf": "79396699071",
+            "birthdate": "1994-03-07"
+        },
+        {
+            "name": "James Smith",
+            "cpf": "12345678912",
+            "birthdate": "1971-07-02"
+        },
+        {
+            "name": "Sarah Smith",
+            "cpf": "12345678913",
+            "birthdate": "1996-12-02"
+        },
+        {
+            "name": "Josh Smith",
+            "cpf": "12345678914",
+            "birthdate": "1970-06-02"
+        },
+        {
+            "name": "Paul Jones",
+            "cpf": "12345678915",
+            "birthdate": "1970-03-01"
+        }
+    ]
+}
