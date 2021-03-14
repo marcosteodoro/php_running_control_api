@@ -111,4 +111,16 @@ class RaceRunnerControllerTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertNotEmpty((json_decode($response->getContent())->result));
     }
+
+    public function testGeneralRanking() 
+    {
+        $client = static::createClient();
+
+        $client->request('GET', 'api/ranking/general');
+
+        $response = $client->getResponse();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertNotEmpty(json_decode($response->getContent())->rankings);
+    }
 }

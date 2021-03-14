@@ -69,4 +69,36 @@ class RaceRunnerController extends AbstractController
             'result' => $result,
         ]);
     }
+
+    #[Route('/api/ranking/general', name: 'api/ranking@get_general_ranking', methods:['GET'])]
+    public function getGeneralRanking(): Response
+    {
+        $entityRepository = $this->entityManager->getRepository(RaceResult::class);
+        $raceEntityRepository = $this->entityManager->getRepository(Race::class);
+
+        $races = $raceEntityRepository->findAll();
+
+        $rankingResults = [];
+        foreach ($races as $race) {
+            $raceResult = $entityRepository->getGeneralRankingByRace($race);
+
+            array_walk($raceResult, function(&$result, $index) {
+                $result['position'] = ++$index;
+            });
+
+            $rankingResults[] = [
+                'race' => [
+                    'id' => $race->getId(),
+                    'type' => $race->getType()
+                ],
+                'results' => $raceResult
+            ];
+        }
+        
+        return $this->json([
+            'status' => 'ok',
+            'code' => 200,
+            'rankings' => $rankingResults,
+        ]);
+    }
 }
