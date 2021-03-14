@@ -27,6 +27,26 @@ class RaceRunnerController extends AbstractController
      */
     public function addRunner(Request $request, Race $race, Runner $runner): Response
     {
+        $racesInSameDay = $this->entityManager->getRepository(Race::class)->findBy([
+            'date' => $race->getDate()
+        ]);
+
+        
+        foreach ($racesInSameDay as $raceToValidate) {
+            foreach ($raceToValidate->getRunners() as $runnerToValidate) {
+                if ($runnerToValidate->getId() === $runner->getId()) {
+                    return $this->json([
+                        'status' => 'error',
+                        'code' => 400,
+                        'errors' => [
+                            'O corredor não pode ser vinculado à duas corridas num mesmo dia.'
+                        ],
+                    ], 400);
+                }
+            }
+        }
+
+
         $race->addRunner($runner);
 
         $this->entityManager->flush();
