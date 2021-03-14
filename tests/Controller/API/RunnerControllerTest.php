@@ -102,4 +102,32 @@ class RunnerControllerTest extends WebTestCase
         $this->assertNotEmpty($responseContent->errors);
         $this->assertCount(2,$responseContent->errors);
     }
+
+    public function testNewRunnerCannotHaveLessThan18Years()
+    {
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/runner',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            json_encode([
+                'name' => 'John Doe',
+                'cpf' => '79396699071',
+                'birthdate' => '2005-07-03'
+            ])
+        );
+
+        $response = $client->getResponse();
+
+        $responseContent = json_decode($response->getContent());
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals('error', $responseContent->status);
+        $this->assertNotEmpty($responseContent->errors);
+    }
 }

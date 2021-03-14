@@ -43,6 +43,16 @@ class RunnerController extends AbstractController
         $runner->setCpf($requestData['cpf']);
         $runner->setBirthdate((new \DateTime($requestData['birthdate'])));
 
+        if ($runner->getBirthdate()->diff(new \DateTime(), true)->format('%y%') < 18) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'errors' => [
+                    'Corredor não pode ter menos de 18 anos de idade.'
+                ]
+            ], 400);
+        }
+
         $errors = $validator->validate($runner);
 
         if (count($errors) > 0) {

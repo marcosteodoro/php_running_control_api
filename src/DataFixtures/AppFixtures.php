@@ -20,7 +20,7 @@ class AppFixtures extends Fixture
             $runner->setBirthdate(
                 date_sub(
                     new \DateTime(),
-                    new \DateInterval('P' . rand(1, 10) * 5 . 'Y')
+                    new \DateInterval('P' . rand(4, 10) * 5 . 'Y')
                 )
             );
 
