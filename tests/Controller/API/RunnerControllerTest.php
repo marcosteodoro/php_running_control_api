@@ -17,7 +17,7 @@ class RunnerControllerTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
-        $this->assertEquals(0, count(json_decode($response->getContent())->runners));
+        $this->assertEquals(50, count(json_decode($response->getContent())->runners));
     }
 
     public function testNewRunner()

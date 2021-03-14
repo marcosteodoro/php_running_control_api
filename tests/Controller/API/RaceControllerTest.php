@@ -19,7 +19,7 @@ class RaceControllerTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
-        $this->assertEquals(0, count(json_decode($response->getContent())->races));
+        $this->assertEquals(10, count(json_decode($response->getContent())->races));
     }
 
     public function testNewRace()
