@@ -123,4 +123,16 @@ class RaceRunnerControllerTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertNotEmpty(json_decode($response->getContent())->rankings);
     }
+
+    public function testAgeRanking() 
+    {
+        $client = static::createClient();
+
+        $client->request('GET', 'api/ranking/age');
+
+        $response = $client->getResponse();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertNotEmpty(json_decode($response->getContent())->rankings);
+    }
 }

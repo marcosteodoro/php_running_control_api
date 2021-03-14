@@ -43,6 +43,37 @@ class RaceResultRepository extends ServiceEntityRepository
 
         return $stmt->fetchAllAssociative();
     }
+   
+    public function getGeneralRankingByRaceAndAge(Race $race, int $ageMin, ?int $ageMax = 200): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT 
+                runner.id,
+                (YEAR(CURRENT_TIMESTAMP) - YEAR(runner.birthdate)) AS age,
+                runner.name
+            FROM 
+                race_result
+                INNER JOIN runner ON runner.id = race_result.runner_id
+            WHERE 
+                race_id = :race_id
+            HAVING
+                age BETWEEN :age_min AND :age_max
+
+            ORDER BY 
+                race_result.finish_time
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            'race_id' => $race->getId(),
+            'age_min' => $ageMin,
+            'age_max' => $ageMax,
+        ]);
+
+        return $stmt->fetchAllAssociative();
+    }
 
     // /**
     //  * @return RaceResult[] Returns an array of RaceResult objects
