@@ -11,6 +11,10 @@ Na aplicação foi utilizado o Symfony e mais detalhes sobre sua documentação 
 ## Rodando o projeto
 Para rodar o projeto, faça o clone do mesmo em um diretório de sua preferência e rode os comandos listados abaixo:
 
+Iniciar containeres do projeto:
+```
+docker-compose up -d
+```
 
 Instalação das dependências do projeto:
 ```
