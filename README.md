@@ -42,3 +42,6 @@ docker-compose exec app php bin/phpunit
 ```
 
 Contamos com duas bases de dados para o projeto, a principal da aplicação em si, e uma base replicada para execução dos testes, todas funcionando no docker.
+
+## Utilidades
+Salve este arquivo [insomnia-php-running-control-api-collection.json](https://github.com/marcosteodoro/php_running_control_api/blob/main/insomnia-php-running-control-api-collection.json) e importe no Insomnia para ter acesso as rotas implementadas.
